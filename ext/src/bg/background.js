@@ -36,6 +36,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     }
+    case "REMOVE_TASK": {
+      console.log("REMOVE TASK CALLED ", request);
+      removeTask(request.payload).then(() => {
+        sendResponse();
+      });
+      break;
+    }
   }
   return true;
 });
@@ -73,7 +80,10 @@ async function addTask(payload) {
     id: Date.now(),
   });
   await saveInLocalStorage(tasks);
-  createNotification("test", "test");
+  const todoTasks = tasks.filter(task => task.isCompleted === false)
+
+
+  createNotification("1 New Task Added", `${todoTasks.length}"pending"`);
   return true;
 }
 
@@ -87,6 +97,18 @@ async function toggleStatus(payload) {
   const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
   const task = tasks[taskIndex];
   task.isCompleted = !task.isCompleted;
+  await saveInLocalStorage(tasks);
+  return true;
+}
+
+async function removeTask(payload) {
+
+  const { taskId } = payload;
+  const tasks = await getFromLocalStorage();
+  const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
+  const task = tasks[taskIndex];
+  tasks.splice(taskIndex, 1)
+
   await saveInLocalStorage(tasks);
   return true;
 }
