@@ -15,14 +15,42 @@
 
 <div id="mainPopup">
 
-	<h1>hello todo</h1>
-
-
-	<input class="form-control" type="text" placeholder="Readonly input here…" readonly>
-
-
-
-
+	<div class="form-group bg-primary text-light text-center">
+		<label for="Remainder">Remind me About</label>
+		<input type="email" class="form-control"  placeholder="Enter Task" id="">
+	</div>
+	<div class="bg-primary text-light text-center ">
+		<label for="minutes">In Minutes</label>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+			  <div class="input-group-text">
+				<input type="checkbox" aria-label="Checkbox for following text input">
+			  </div>
+			</div>
+			<input type="text" class="form-control" placeholder="Enter Minutes">
+		</div>
+	</div>
+   <div class="bg-primary text-light text-center">
+	<div class="form-group row">
+		<label for="date-input" class="col-2 col-form-label">Date</label>
+		<div class="col">
+			<input class="form-control" type="date">
+		</div>
+	  </div>
+   </div>
+   <div class="bg-primary text-light text-center">
+	<div class="form-group row">
+		<label for="example-time-input" class="col-2 col-form-label">Time</label>
+		<div class="col">
+		  <input class="form-control" type="time" value="00:00:00">
+		</div>
+	</div>
+   </div>
+   <div class="d-flex justify-content-center mb-3">
+		<button class="btn bt-lg btn-success text-center">
+			Add Reminder
+		</button>
+   </div>
 </div>
 
 
