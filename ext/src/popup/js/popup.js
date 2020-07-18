@@ -79,20 +79,17 @@ function updateToTaskList(tasks) {
     const completedTasks = tasks.filter((task) => task.isCompleted === true);
 
     for (const task of todoTasks) {
-        $("#taskList").append(`<li id="${task.id}" class="list-group-item">
-    <input class="status_checkbox" id="chk_${task.id}" type="checkbox" 
-    >
-    <label for="chk_${task.id}">${task.name}</label>
-    <button class="delBtn">remove</button>
-    </li>`);
+        $("#taskList").append(`<li id="${task.id}" class="list-group-item clearfix">
+            <input class="status_checkbox" id="chk_${task.id}" type="checkbox">
+            <label class="text-danger" for="chk_${task.id}">${task.name}</label>
+            <button class="delBtn px-5 btn bg-danger float-right"><i class="fa fa-trash" style="font-size:22px;color:white;"></i></button>
+        </li>`);
     }
     for (const task of completedTasks) {
-        $("#completedTaskList").append(`<li id="${task.id}" class="list-group-item">
-    <input class="status_checkbox" id="chk_${task.id}" type="checkbox" 
-    checked=true
-    >
-    <label for="chk_${task.id}">${task.name}</label>
-    <button class="delBtn">remove</button>
+        $("#completedTaskList").append(`<li id="${task.id}" class="list-group-item clearfix">
+            <input class="status_checkbox" id="chk_${task.id}" type="checkbox" checked=true >
+            <label class="text-success" for="chk_${task.id}"><del>${task.name}</del></label>
+            <button class="delBtn px-5 btn bg-danger float-right"><i class="fa fa-trash" style="font-size:22px;color:white;"></i></button>
     </li>`);
     }
 }
