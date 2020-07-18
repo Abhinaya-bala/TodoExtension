@@ -13,6 +13,8 @@
 </style>
 <link rel="stylesheet" href="./css/bootstrap.css">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <div id="mainPopup">
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
@@ -31,17 +33,31 @@
 				<input type="text" class="form-control w-75 mx-2" placeholder="Add a task" id="taskNameInput">
 				<button class="btn btn-sm btn-primary mx-2" id="addTaskBtn">Add</button>
 			</div>
+
+			<h6 class="text-primary m-2">Remind me on</h6>
+			<input type="datetime-local" id="reminderTime" class="form-control m-2 w-75">
+
 		</div>
 		<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-			Yet to do
-			<ul class="list-group" id="taskList">
 
-			</ul>
+			<div class="m-2">
+				<h6 class="text-danger">Planned Task</h6>
+				<ul class="list-group" id="taskList">
 
-			CompletedTask
-			<ul class="list-group" id="completedTaskList">
+				</ul>
+			</div>
 
-			</ul>
+			<div class="m-2">
+				<h6 class="text-success">Completed Task</h6>
+				<ul class="list-group" id="completedTaskList">
+
+				</ul>
+			</div>
+
+
+
+
+
 
 		</div>
 	</div>

@@ -2,22 +2,30 @@
 
 $("#addTaskBtn").click(() => {
     let taskName = $("#taskNameInput").val();
+    let reminderTime = $("#reminderTime").val();
     console.log("add task clicked", taskName);
+    console.log("reminder time", reminderTime);
+    let reminderTimeInMilliSeconds = reminderTime
+        ? new Date(reminderTime).getTime()
+        : null;
+
     chrome.runtime.sendMessage(
         {
             action: "ADD_TASK",
             payload: {
                 taskName: taskName,
+                reminderTimeInMilliSeconds: reminderTimeInMilliSeconds,
             },
         },
         (response) => {
             console.log("count", response);
             refreshTasks();
             $("#taskNameInput").val("");
+            $("#reminderTime").val("");
+
         }
     );
 });
-
 
 $(document).on("click", ".delBtn", function () {
     console.log("remove task", this.parentElement.id);
