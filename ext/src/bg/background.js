@@ -16,11 +16,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 });
 
-chrome.extension.onMessage.addListener(
-  function (request, sender, sendResponse) {
-    chrome.pageAction.show(sender.tab.id);
-    sendResponse();
-  });
+// chrome.extension.onMessage.addListener(
+//   function (request, sender, sendResponse) {
+//     chrome.pageAction.show(sender.tab.id);
+//     sendResponse();
+//   });
 
 function saveInLocalStorage(tasks) {
   chrome.storage.local.set({ tasks }, function () {
@@ -33,6 +33,12 @@ function getFromLocalStorage() {
     console.log('Value currently is ' + result.key);
   });
 }
+
+
+
+
+
+
 
 
 

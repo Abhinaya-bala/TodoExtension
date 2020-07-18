@@ -1,3 +1,5 @@
+//send mgs to background
+
 chrome.runtime.sendMessage(
     { action: "GET_COUNT", from: "popup" },
     response => {
