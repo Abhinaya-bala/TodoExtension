@@ -47,11 +47,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
-// chrome.extension.onMessage.addListener(
-//   function (request, sender, sendResponse) {
-//     chrome.pageAction.show(sender.tab.id);
-//     sendResponse();
-//   });
+
 
 function saveInLocalStorage(tasks) {
   return new Promise((resolve, reject) => {
@@ -70,20 +66,23 @@ function getFromLocalStorage() {
 }
 
 async function addTask(payload) {
-  const { taskName } = payload;
+  const { taskName, reminderTimeInMilliSeconds } = payload;
   const tasks = await getFromLocalStorage();
   console.log(tasks);
+  const taskId = Date.now();
   tasks.push({
     name: taskName,
     isCompleted: false,
-    remindOn: 0,
-    id: Date.now(),
+    remindOn: reminderTimeInMilliSeconds,
+    id: taskId,
   });
   await saveInLocalStorage(tasks);
-  const todoTasks = tasks.filter(task => task.isCompleted === false)
+  const todoTasks = tasks.filter((task) => task.isCompleted === false);
 
-
-  createNotification("1 New Task Added", `${todoTasks.length}"pending"`);
+  createNotification("1 New Task Added", `${todoTasks.length} Pending Task  `);
+  if (reminderTimeInMilliSeconds) {
+    createAlarm(taskId, reminderTimeInMilliSeconds);
+  }
   return true;
 }
 
@@ -102,12 +101,11 @@ async function toggleStatus(payload) {
 }
 
 async function removeTask(payload) {
-
   const { taskId } = payload;
   const tasks = await getFromLocalStorage();
   const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
   const task = tasks[taskIndex];
-  tasks.splice(taskIndex, 1)
+  tasks.splice(taskIndex, 1);
 
   await saveInLocalStorage(tasks);
   return true;
@@ -129,3 +127,26 @@ function createNotification(title, message) {
     }
   );
 }
+
+function createAlarm(taskId, reminderTimeInMilliSeconds) {
+  chrome.alarms.create(taskId + "", {
+    when: reminderTimeInMilliSeconds,
+  });
+}
+
+chrome.alarms.onAlarm.addListener(async function (alarm) {
+  console.log("Got an alarm!", alarm);
+  const taskId = alarm.name;
+  const tasks = await getFromLocalStorage();
+  const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
+  const task = tasks[taskIndex];
+
+  if (task.isCompleted == false) {
+    createNotification(
+      "Reminder!!",
+      `You asked me to remind you about a task - ${task.name}`
+    );
+  }
+
+
+});
