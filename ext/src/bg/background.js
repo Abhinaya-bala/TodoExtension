@@ -43,11 +43,24 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     }
+    case "CLEAR_TODO": {
+      console.log("CLEAR ALL TASK CALLED ", request);
+      clearTodo().then(() => {
+        sendResponse();
+      });
+      break;
+    }
+
+    case "CLEAR_DONE": {
+      console.log("CLEAR ALL TASK CALLED ", request);
+      clearDone().then(() => {
+        sendResponse();
+      });
+      break;
+    }
   }
   return true;
 });
-
-
 
 function saveInLocalStorage(tasks) {
   return new Promise((resolve, reject) => {
@@ -66,7 +79,7 @@ function getFromLocalStorage() {
 }
 
 async function addTask(payload) {
-  const { taskName, reminderTimeInMilliSeconds } = payload;
+  const { taskName, reminderTimeInMilliSeconds, recurringReminder } = payload;
   const tasks = await getFromLocalStorage();
   console.log(tasks);
   const taskId = Date.now();
@@ -75,6 +88,7 @@ async function addTask(payload) {
     isCompleted: false,
     remindOn: reminderTimeInMilliSeconds,
     id: taskId,
+    recurringReminder: recurringReminder, // true/false
   });
   await saveInLocalStorage(tasks);
   const todoTasks = tasks.filter((task) => task.isCompleted === false);
@@ -111,7 +125,22 @@ async function removeTask(payload) {
   return true;
 }
 
-// https://chrome.google.com/webstore/detail/storage-area-explorer/ocfjjjjhkpapocigimmppepjgfdecjkb?hl=en
+async function clearTodo() {
+  const tasks = await getFromLocalStorage();
+  const todo = []
+  await saveInLocalStorage(todo);
+  return true;
+}
+
+async function clearDone() {
+  const tasks = await getFromLocalStorage();
+  const taskDone = tasks.filter((task) => task.isCompleted === false);
+  await saveInLocalStorage(taskDone);
+
+  return true;
+}
+
+
 
 function createNotification(title, message) {
   chrome.notifications.create(
@@ -140,6 +169,19 @@ chrome.alarms.onAlarm.addListener(async function (alarm) {
   const tasks = await getFromLocalStorage();
   const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
   const task = tasks[taskIndex];
+  if (task.recurringReminder) {
+    const nextDay = new Date(task.reminderTimeInMilliSeconds);
+    nextDay.setDate(nextDay.getDate() + 1);
+    const nextDayInMilliSeconds = nextDay.getTime();
+    task.reminderTimeInMilliSeconds = nextDayInMilliSeconds;
+    updateTask(taskId, nextDayInMilliSeconds);
+    createAlarm(taskId, nextDayInMilliSeconds);
+    createNotification(
+      "Reminder!!",
+      `You asked me to remind you about a task - ${task.name}`
+    );
+    return;
+  }
 
   if (task.isCompleted == false) {
     createNotification(
@@ -147,6 +189,30 @@ chrome.alarms.onAlarm.addListener(async function (alarm) {
       `You asked me to remind you about a task - ${task.name}`
     );
   }
+});
 
+async function updateTask(taskId, reminderTimeInMilliSeconds) {
+  const tasks = await getFromLocalStorage();
+  const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
+  const task = tasks[taskIndex];
+  task.reminderTimeInMilliSeconds = reminderTimeInMilliSeconds;
+  await saveInLocalStorage(tasks);
+  return true;
+}
 
+function addFromContextMenu(info) {
+  const { selectionText } = info;
+  addTask({
+    taskName: selectionText,
+    reminderTimeInMilliSeconds: 0,
+    recurringReminder: false,
+  });
+
+  console.log("added thru content menu");
+}
+
+chrome.contextMenus.create({
+  title: "Add to task",
+  contexts: ["selection"],
+  onclick: addFromContextMenu,
 });

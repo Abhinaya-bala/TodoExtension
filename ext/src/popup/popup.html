@@ -1,144 +1,152 @@
 <!doctype html>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="./css/bootstrap.css">
-<link href="https://fonts.googleapis.com/css2?family=Red+Rose&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
 <style type="text/css">
+	* {
+		font-family: 'Lato', sans-serif;
+	}
+
 	#mainPopup {
 		padding: 10px;
 		height: 400px;
 		width: 500px;
-		font-family: Helvetica, Ubuntu, Arial, sans-serif;
+		font-family: 'Lato', sans-serif;
 	}
 
-	h1 {
-		font-size: 2em;
-		font-family: 'Red Rose'
+	h2 {
+
+		font-size: 18px;
+		text-transform: uppercase;
+		font-weight: 300;
+		font-family: 'Lato', sans-serif;
 	}
-    li a{
-	 font-size: 20px;
-	 font-family: 'Red Rose'
+
+	li a {
+		font-size: 20px;
+
 	}
-    .status_checkbox{
-		width: 16px; 
+
+	.status_checkbox {
+		width: 16px;
 		height: 16px;
 	}
-	.status_checkbox+label,#clearall{
+
+	.status_checkbox+label,
+	#clearall {
 		font-size: 20px;
-		font-family: 'Red Rose'	
+
 	}
-	.btn,input,label,h4,h2{
-		font-family: 'Red Rose'
+
+
+
+	label {
+		font-size: 14px;
+		text-transform: uppercase;
+		color: #383333;
 	}
-	label{
-		font-size: 20px;
+
+	h4 {
+		font-size: 16px;
+		text-transform: uppercase;
+		color: #383333;
+	}
+
+	.nav-link {
+		padding: 1px 6px;
+		text-transform: uppercase;
+		font-size: 14px;
+		font-weight: 500;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+
+	.nav-pills .nav-link.active {
+		background: none;
+		color: black;
+		border: 1px solid #bb9a9a;
+	}
+
+	.delBtn i {
+		font-size: 14px;
+		color: red
+	}
+
+	.todo-item {
+		font-size: 16px !important;
+		text-transform: none !important;
+	}
+
+	.empty-state {
+		min-height: 200px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 	#completedTaskList li ,#taskList li{ 
 		background:#E5E7E9; 
 	}
 </style>
 <div id="mainPopup">
-	<h2 class="bg-dark text-light">
-		<i class="fa fa-tasks pl-1" style="font-size:22px;color:white;"></i>	Task Reminder
+	<h2 class="">
+		<i class="far fa-calendar-check text-primary mr-2"></i> Task Reminder
+
 	</h2>
-	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<ul class="nav nav-pills mt-4" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
-			<a class="nav-link active bg-primary text-light" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+			<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
 				aria-selected="true">Add Task</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link bg-danger text-light" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-				aria-selected="false">Tasks</a>
+			<a class="nav-link  " id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+				aria-selected="false">Todo</a>
 		</li>
-		<li class="nav-item" role="presentation">
-			<a class="nav-link bg-success text-light" id="impdate-tab" data-toggle="tab" href="#impdate" role="tab" aria-controls="impdate"
-				aria-selected="false">Important Date</a>
-		</li>
+
 
 	</ul>
 	<div class="tab-content my-3" id="myTabContent">
 		<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-			<div class="bg-dark p-4">
-				<label class="text-light">Remind me about :</label>
+			<div class=" p-4">
+				<label class="">Remind me about :</label>
 				<input type="text" class="form-control mb-2" placeholder="Enter Task" id="taskNameInput">
-				<label class="text-light">Remind me on :</label>
+				<label class="">Remind me on :</label>
 				<input type="datetime-local" id="reminderTime" class="form-control">
+				<div class="form-check mt-4">
+					<input class="form-check-input" type="checkbox" id="recurringCheckbox">
+					<label class="form-check-label" for="recurringCheckbox">
+						Remind me daily on the same time
+					</label>
+				</div>
 			</div>
-            <div class="d-flex justify-content-center mt-2">
-				<button class="btn btn-circle bg-warning btn-lg" id="addTaskBtn"><i class="fa fa-bell" style="font-size:22px;"></i> Add Reminder </button>
+			<div class="d-flex justify-content-center mt-2">
+				<button class="btn btn-circle bg-warning btn-lg" id="addTaskBtn"><i class="fa fa-bell"
+						style="font-size:22px;"></i> Add Reminder </button>
 			</div>
 
 		</div>
 		<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-			<div class="m-2">
-				<h4 class="bg-danger text-center">Planned Task :</h4>
+			<div class="m-3">
+				<h4>Planned Task :</h4>
 				<ul class="list-group" id="taskList">
 				</ul>
 			</div>
 
-			<div class="m-2">
-				<h4 class="bg-success text-center">Completed Task :</h4>
+			<div class="m-3">
+				<h4>Completed Task :</h4>
 				<ul class="list-group" id="completedTaskList">
 
 				</ul>
 			</div>
 
-			<div class="m-2 d-flex justify-content-center" >
-				<button class="btn bt-lg btn-warning" id="clearall"><i class="fa fa-trash" style="font-size:22px"></i>Clear All</button>
-			</div>
-		</div> 
-		<div class="tab-pane fade" id="impdate" role="tabpanel" aria-labelledby="impdate-tab">
-			<div class="bg-dark p-4 text-light">
-				<label for="date-input" class="form-label">Date :</label>
-				<input class="form-control" type="date">	
-				<label for="date-input" class="form-label mt-2">Event :</label>
-				<input class="form-control" type="text" placeholder="Name of the Event">
-			</div>
-			<div class="col mt-2 d-flex justify-content-center">
-				<button class="btn bg-warning btn-lg" id="addTaskBtn"><i class="fa fa-calendar" style="font-size:22px;color:black;"></i> Add Event</button>
+
+			<div class="m-2 d-flex justify-content-center">
+				<button class="btn bt-lg btn-warning" id="clearallTodo">Clear All</button>
 			</div>
 		</div>
 
-	</div>
 
-
-
-	<!-- <div class="bg-primary text-light text-center ">
-		<label for="minutes">In Minutes</label>
-		<div class="input-group mb-3">
-			<div class="input-group-prepend">
-				<div class="input-group-text">
-					<input type="checkbox" aria-label="Checkbox for following text input">
-				</div>
-			</div>
-			<input type="text" class="form-control" placeholder="Enter Minutes">
-		</div>
 	</div>
-	<div class="bg-primary text-light text-center">
-		<div class="form-group row">
-			<label for="date-input" class="col-2 col-form-label">Date</label>
-			<div class="col">
-				<input class="form-control" type="date">
-			</div>
-		</div>
-	</div>
-	<div class="bg-primary text-light text-center">
-		<div class="form-group row">
-			<label for="example-time-input" class="col-2 col-form-label">Time</label>
-			<div class="col">
-				<input class="form-control" type="time" value="00:00:00">
-			</div>
-		</div>
-	</div>
-	<div class="d-flex justify-content-center mb-3">
-		<button class="btn bt-lg btn-success text-center">
-			<i class="fa fa-bell" style="font-size:20px;color:white"></i>
-			Add Reminder
-		</button>
-	</div>
- -->
-
-
 
 	<script src="./js/jquery.js"></script>
 	<script src="./js/bootstrap.min.js"></script>
