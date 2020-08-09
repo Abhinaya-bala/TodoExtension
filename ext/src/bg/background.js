@@ -127,7 +127,7 @@ async function removeTask(payload) {
 
 async function clearTodo() {
   const tasks = await getFromLocalStorage();
-  const todo = tasks.filter((task) => task.isCompleted === true);
+  const todo = []
   await saveInLocalStorage(todo);
   return true;
 }
